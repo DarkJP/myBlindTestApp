@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>My Blind Test App</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="./css/index.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body>
+
+    <div id="homepage-container" class="flex-container vertical">
+        <div class="center">
+            <h1 class="fancy-font">My Blind Test App</h1>
+            <div id="homepage-form">
+                <span>Votre magnifique nom :</span><br/>
+                <input id="inpt_username" class="form-control" type="text" placeholder="Xx_KévinFPS_xX"><br/>
+                <span>Nom de la partie :</span><br/>
+                <input id="inpt_roomname" class="form-control" type="text" placeholder="Saucisse"><br/>
+            </div>
+            <button id="btn_join_room" class="btn btn-primary">C'est parti !</button>
+        </div>
+    </div>
+
+    <div id="room-container" class="flex-container horizontal">
+        <div id="left" class="room-column"></div>
+
+        <div id="middle" class="room-column">
+            <div class="center">
+                <p class="fancy-font" id="tests-title">Blind tests disponibles</p>
+            </div>
+            <div id="opt_playlists"></div>
+            <div id="player"></div>
+            <div id="btn_start_container" class="center"></div>
+        </div>
+
+        <div id="right" class="room-column">
+            <div class="center">
+                <p class="fancy-font" id="msg-title">Messages</p>
+            </div>
+            <div id="div_messages"></div>
+            <div class="flex">
+                <input class="form-control" type="text" id="inpt_msg" placeholder="Envoyer un message...">
+                <button id="btn_send_msg" class="btn btn-primary">Envoyer</button>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="./js/index.js"></script>
+
+</body>
+</html>

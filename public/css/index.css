@@ -1,0 +1,123 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@700&display=swap');
+
+
+body {
+    margin:5;
+    height:100vh;
+    background-color: #c5c6c7;
+}
+.fancy-font {
+    font-family: 'Ubuntu', sans-serif;
+}
+button {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.flex-container {
+    display: flex;
+    height: 100%;
+}
+.vertical {
+    flex-direction: column;
+}
+.horizontal {
+    flex-flow: row;
+    justify-content: space-evenly;
+}
+
+.center {
+    margin: auto;
+    text-align: center;
+    /*border: 1px dashed blue;*/
+}
+#homepage-container h1 {
+    font-size: 4em;
+    margin-top: -100px;
+    margin-bottom: 20px;
+}
+#homepage-container button {
+    font-size: 2em;
+}
+
+#homepage-form {
+    padding-left: 10px;
+    padding-right: 10px;
+    text-align: left;
+    /*border: 1px dashed lime;*/
+}
+#homepage-form input {
+    width: 95%;
+    font-size: 2em;
+}
+#homepage-form span {
+    font-size: 2em;
+}
+
+#room-container {
+    display: none;
+}
+.room-column {
+    height: 100%;
+    padding: 10px;
+    border: 1px solid black;
+}
+#left {
+    width: 10vw;
+    background-color: #d1d1d1;
+}
+#right {
+    width: 40vw;
+    background-color: #d1d1d1;
+}
+#middle {
+    width: 50vw;
+}
+#msg-title, #tests-title {
+    margin-top: -15px;
+    font-size: 2em;
+    border-bottom: 2px solid black;
+}
+#div_messages {
+    height: 85vh;
+    overflow-y: auto;
+}
+.flex {
+    display: flex;
+}
+#inpt_msg {
+    margin-top: 5px;
+    margin-right: 5px;
+}
+
+/* Playlists stuff */
+#opt_playlists {
+    height: 85vh;
+    overflow-y: auto;
+}
+
+.playlist-container {
+    width: 31%;
+    height: 180px;
+    display: inline-block;
+    padding: 5px;
+    margin: 0px 5px 10px 5px;
+    border: 2px solid black;
+    background-color: #ffffff;
+    text-align: center;
+    overflow: auto;
+
+    user-select: none;
+}
+.playlist-container:hover {
+    cursor: pointer;
+}
+
+.playlist-title {
+    font-size: 1.2em;
+}
+
+table, th, tr, td {
+    border: 1px solid black;
+    text-align: center;
+    padding: 5px;
+}
