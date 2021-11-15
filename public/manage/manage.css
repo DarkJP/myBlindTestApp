@@ -1,0 +1,36 @@
+body {
+    background-color: #c5c6c7;
+}
+
+.pl_container {
+    padding: 5px;
+    border: 1px solid black;
+    margin-top: 10px;
+}
+
+.pl_container button {
+    margin: 5px;
+}
+
+#btn_create_playlist {
+    max-width: 150px;
+    margin-left: 12px;
+}
+
+.row a {
+    max-width: 100px;
+    margin-left: 12px;
+}
+
+#opt_create {
+    margin-top: 10px;
+    margin-left: 0px;
+    padding: 15px;
+    border: 1px solid black;
+    display: none;
+}
+
+#btn_create_playlist_confirm, #btn_create_playlist_cancel {
+    margin-right: 10px;
+    width: 150px;
+}

@@ -19,18 +19,22 @@ exports.addPlaylist = async (req, res, next) => {
 
     try {
 
-        let dateToday = new Date().toLocaleDateString('fr-FR');
-
-        const playlist = new Playlist({
-            name: req.params.name,
-            author: req.params.author,
-            creationDate: dateToday,
-            coverImgPath: './img/disc.jpg',
-            songs: []
-        });
+        const playlist = new Playlist({...req.body});
 
         await playlist.save();
         res.status(201).json({message: 'Playlist ajoutée avec succès!'});
+
+    } catch (err) {
+        res.status(400).json({ message: 'Une erreur est survenue du côté du serveur.' })
+    }
+};
+
+exports.deletePlaylist = async (req, res, next) => {
+
+    try {
+
+        await Playlist.deleteOne({ _id: req.params.id });
+        res.status(200).json({message: 'Playlist supprimée.'});
 
     } catch (err) {
         res.status(400).json({ message: 'Une erreur est survenue du côté du serveur.' })
