@@ -5,10 +5,9 @@ const router = express.Router();
 
 router.get('/', controller.getHomePage);
 router.get('/playlists', controller.getPlaylists);
-router.post('/add/:name&:author', controller.addPlaylist);
-router.post('/dbut', controller.DBUT);
-// router.get('/products', controller.getProducts);
-// router.post('/add/:id', controller.addProduct);
-// router.delete('/delete/:id', controller.deleteProduct);
+router.get('/playlists/:id', controller.getPlaylistById);
+router.post('/add', controller.addPlaylist);
+router.delete('/manage/deletePlaylist/:id', controller.deletePlaylist);
+router.put('/manage/editPlaylist/:id', controller.editPlaylist);
 
 module.exports = router;

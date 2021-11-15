@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Gérer les playlists</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="icon" href="../favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="./manage.css">
+</head>
+<body>
+
+    <div class="container">
+        <div class="row">
+            <h1>Gérer les playlists</h1>
+            <a class="btn btn-primary" href="./../index.html">← Retour</a>
+            <p>La page est pas terrible, j'ai fait ça sans trop me soucier de l'apparence, il fallait juste que ça fonctionne.<br/>
+                Assurez-vous que les vidéos YouTube que vous ajoutez autorisent l'intégration ! (Sinon ça ne marchera pas, et je n'ai
+                pas encore réfléchi à une solution pour le vérifier automatiquement)
+            </p>
+            <button id="btn_create_playlist" class="btn btn-success">Créer une playlist</button>
+            <div id="opt_playlists"></div>
+        </div>
+
+        <!-- Create section -->
+        <div class="row" id="opt_create">
+            <span>Nom de la playlist</span>
+            <input id="input_create_pl_name" type="text" placeholder="Jeux Nintendo">
+            <span>Auteur de la playlist</span>
+            <input id="input_create_author" type="text" placeholder="Michel Michel">
+            <span>Chansons</span>
+            <textarea id="input_create_songs" placeholder="MDK - Press Start;https://youtu.be/XoLouT7TqZY;[press start mdk,mdk press start]"></textarea>
+            <p>Formattage :<br/>Une chanson par ligne, et respecter le format :<br/>
+               titreChanson;urlYoutube;[réponse1,réponse2,réponseN]
+            </p>
+            <button id="btn_create_playlist_confirm" class="btn btn-success">Ajouter la playlist</button>
+            <button id="btn_create_playlist_cancel" class="btn btn-primary">Annuler</button>
+        </div>
+
+        <!-- Edit section -->
+        <div class="row" id="opt_edit">
+            <span>Nom de la playlist</span>
+            <input id="input_edit_pl_name" type="text" placeholder="Jeux Nintendo">
+            <span>Auteur de la playlist</span>
+            <input id="input_edit_author" type="text" placeholder="Michel Michel">
+            <span>Chansons</span>
+            <textarea id="input_edit_songs" placeholder="MDK - Press Start;https://youtu.be/XoLouT7TqZY;[press start mdk,mdk press start]"></textarea>
+            <p>Formattage :<br/>Une chanson par ligne, et respecter le format :<br/>
+               titreChanson;urlYoutube;[réponse1,réponse2,réponseN]
+            </p>
+            <button id="btn_edit_playlist_confirm" class="btn btn-success">Modifier</button>
+            <button id="btn_edit_playlist_cancel" class="btn btn-primary">Annuler</button>
+        </div>
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="./js/managePlaylists.js"></script>
+    <script src="./js/addPlaylist.js"></script>
+    <script src="./js/editPlaylist.js"></script>
+    <script src="./js/removePlaylist.js"></script>
+
+</body>
+</html>

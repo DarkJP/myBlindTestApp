@@ -1,3 +1,5 @@
+/* To make a mistake is human but to really fuck things up you need a computer. */
+
 /* Homepage stuff */
 const homepage_container = document.getElementById('homepage-container');
 const inpt_username = document.getElementById('inpt_username');
@@ -322,6 +324,7 @@ function displayFinalScores(scoreObj) {
 /* TODO
 remove table borders from final scores
 fix admin can't select playlists after back to home (also send other users back home)
+add page to add/edit playlists
 */
 
 /* Clic sur le bouton 'Chanson suivante' */

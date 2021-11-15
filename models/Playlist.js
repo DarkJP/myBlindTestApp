@@ -4,7 +4,6 @@ const playlistSchema = mongoose.Schema({
     name: { type: String, required: true },
     author: String,
     creationDate: String,
-    coverImgPath: String,
     songs: [{
         name: String,
         url: String,
