@@ -22,7 +22,7 @@ body {
     margin-left: 12px;
 }
 
-#opt_create {
+#opt_create, #opt_edit {
     margin-top: 10px;
     margin-left: 0px;
     padding: 15px;
@@ -30,7 +30,10 @@ body {
     display: none;
 }
 
-#btn_create_playlist_confirm, #btn_create_playlist_cancel {
+#btn_create_playlist_confirm,
+#btn_create_playlist_cancel,
+#btn_edit_playlist_confirm,
+#btn_edit_playlist_cancel {
     margin-right: 10px;
     width: 150px;
 }
