@@ -69,7 +69,7 @@ io.on('connection', socket => {
         io.to(user.room).emit('roomUsers', {room: user.room, users: getRoomUsers(user.room)});
 
         if (user.isAdmin) {
-            socket.emit('admin', 'You\'re the admin.');
+            socket.emit('adminStartBtn');
         }
 
     });
@@ -175,11 +175,12 @@ io.on('connection', socket => {
         if (plObj == null) {console.log('Erreur, le joueur n\'est dans aucune des playlists.');}
 
         if (plObj.activeSongIndex + 1 >= plObj.songs.length) {
-            // end of test
+            // Fin du test
             io.to(plObj.room).emit('end', buildScoreObj(plObj));
 
-            // Supprimer la playlist des playlists actives
-            removePlaylist(plObj.room);
+            // Envoyer le bouton retour accueil à l'admin
+            let admin = getAdminPlayer(plObj);
+            io.to(admin.id).emit('homeBtn');
 
         } else {
             plObj.activeSongIndex ++;
@@ -187,6 +188,20 @@ io.on('connection', socket => {
         }
     });
 
+    socket.on('adminWentBackHome', () => {
+        // Trouver l'objet playlist dans lequel joue ce joueur
+        let plObj = getPlaylist(socket.id);
+
+        // Envoyer un message à tout le monde dans la room
+        io.to(plObj.room).emit('goBackHome');
+
+        // Uniquement pour l'admin
+        let admin = getAdminPlayer(plObj);
+        io.to(admin.id).emit('adminStartBtn');
+
+        // Supprimer la playlist des playlists actives
+        removePlaylist(plObj.room);
+    });
 
     // Lorsque que quelqu'un se déconnecte
     socket.on('disconnect', () => {

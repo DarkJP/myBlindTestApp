@@ -60,7 +60,7 @@ socket.on('roomUsers', info => {
 });
 
 /* Show start button only to room admin */
-socket.on('admin', msg => {
+socket.on('adminStartBtn', () => {
     btn_start_container.innerHTML = '<button id="btn_start_test" class="btn btn-primary">Commencer le test</button>';
 });
 
@@ -144,7 +144,7 @@ async function displayPlaylists() {
 }
 
 /* Select a playlist */
-$(document).on('click', '.playlist-container', function() {
+$(document).on('click', '.playlist-container', function selectPlaylist() {
     if (document.getElementById('btn_start_test') != null) {
         selectedPlaylistId = this.id;
         let others = document.getElementsByClassName('playlist-container');
@@ -154,7 +154,7 @@ $(document).on('click', '.playlist-container', function() {
     }
 })
 
-$(document).on('click', '#btn_start_test', function() {
+$(document).on('click', '#btn_start_test', function btnStartTest() {
     if (selectedPlaylistId != null) {
         socket.emit('adminstartclick', selectedPlaylistId);
     }
@@ -185,7 +185,7 @@ function displayGameScreen() {
 }
 
 $(document).on('keydown', '#inpt_answer', function(e) {
-    if (e.code == 'Enter') {
+    if (e.code == 'Enter' || e.code == 'NumpadEnter') {
         socket.emit('answer', this.value);
         this.value = '';
         this.disabled = true;
@@ -268,18 +268,23 @@ function displayRoundScores(scoreObj) {
 }
 
 socket.on('adminNextBtn', res => {
-    console.log('Showing Next button to admin');
     btn_start_container.innerHTML = '<button id="btn_next_song" class="btn btn-primary">Chanson suivante</button>';
 });
 
-/* Clic sur le bouton 'Chanson suivante' */
-$(document).on('click', '#btn_next_song', function() {
+socket.on('homeBtn', res => {
+    btn_start_container.innerHTML = '<button id="btn_back_home" class="btn btn-primary">Accueil</button>';
+});
+
+$(document).on('click', '#btn_next_song', function clickChansonSuivante() {
     socket.emit('nextsong');
     btn_start_container.innerHTML = '';
 });
 
 /* Fin de partie */
 socket.on('end', scores => {
+
+    selectedPlaylistId = null;
+
     console.log('End of the test! Scores:');
     console.log(scores);
     /* pause video */
@@ -287,7 +292,6 @@ socket.on('end', scores => {
 
     testsTitle.innerHTML = 'Blind Test terminé !';
     opt_playlists.append(displayFinalScores(scores.playerAns));
-    btn_start_container.innerHTML = '<button id="btn_back_home" class="btn btn-primary">Accueil</button>';
 });
 
 function displayFinalScores(scoreObj) {
@@ -321,44 +325,15 @@ function displayFinalScores(scoreObj) {
     return container;
 }
 
-/* TODO
-remove table borders from final scores
-fix admin can't select playlists after back to home (also send other users back home)
-add page to add/edit playlists
-*/
-
-/* Clic sur le bouton 'Chanson suivante' */
-$(document).on('click', '#btn_back_home', function() {
-    displayPlaylists();
+$(document).on('click', '#btn_back_home', function clickRetourAccueil() {
+    // notifier le serveur du retour à l'accueil (pour les autres joueurs)
+    socket.emit('adminWentBackHome');
+    // re enable playlist selection and show "commencer le test" button
 });
 
-/* ------------------------------------------ */
-/*             YouTube API stuff              */
-/* ------------------------------------------ */
-
-// load IFrame Player API
-const tag = document.createElement('script');
-tag.src = "https://www.youtube.com/iframe_api";
-const firstScriptTag = document.getElementsByTagName('script')[0];
-firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-// Create an <iframe> when API is ready
-let ytPlayer;
-function onYouTubeIframeAPIReady() {
-    ytPlayer = new YT.Player('player', {
-        height: '360',
-        width: '640',
-        videoId: 'Nlbrx4Wrko8',
-        events: {
-            'onReady': onPlayerReady,
-        }
-    });
-    document.getElementById("player").style.display = 'none';
-}
-
-function onPlayerReady(event) {
-    console.log("YT Player Ready");
-}
+socket.on('goBackHome', () => {
+    displayPlaylists();
+});
 
 /* ------------------------------------------ */
 /*           Database related stuff           */
@@ -370,35 +345,6 @@ async function getPlaylists() {
 
         console.log(ans);
         return ans;
-
-    } catch (err) {
-        console.log(err);
-    }
-}
-
-async function addPlaylist(name, author) {
-    try {
-        let res = await fetch('/add/' + name + '&' + author, { method: 'POST' });
-        let ans = await res.json();
-
-        let status = res.status;
-        if (status == 201) {
-            console.log('Succès : ' + ans.message);
-        } else {
-            console.log('Erreur : ' + ans.message);
-        }
-    } catch (err) {
-        console.log(err);
-    }
-}
-
-async function DBUT() {
-    try {
-        console.log('Sending Sample Test Data...');
-        let promise = await fetch('/dbut', { method: 'POST' });
-        let ans = await promise.json();
-        console.log(ans);
-        console.log('Done.');
 
     } catch (err) {
         console.log(err);

@@ -28,7 +28,7 @@ async function displayEditSection(plId) {
     for (let song of playlist.songs) {
         songLine += song.name + ';' + song.url + ';[';
         for (let accAns of song.acceptedAnswers) {
-            songLine += accAns + ';';
+            songLine += accAns + ',';
         }
         songLine = songLine.slice(0, songLine.length -1);
         songLine += ']\n';
