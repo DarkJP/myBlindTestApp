@@ -68,9 +68,12 @@ function buildPlaylistObject(plName, plAuthor, plSongs) {
         let currName = arrSplit[0];
         let currUrl = arrSplit[1];
         let currAccAns = (arrSplit[2].substring(1, arrSplit[2].length -1)).split(',');
+        let currGuessTime = arrSplit[3];
+
         plObj.songs.push(
             {name: currName,
              url: currUrl,
+             guessTime: currGuessTime,
              acceptedAnswers: currAccAns
             }
         );

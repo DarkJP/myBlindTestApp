@@ -37,3 +37,8 @@ body {
     margin-right: 10px;
     width: 150px;
 }
+
+#input_create_songs,
+#input_edit_songs {
+    min-height: 150px;
+}

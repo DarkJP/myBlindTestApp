@@ -31,7 +31,7 @@ async function displayEditSection(plId) {
             songLine += accAns + ',';
         }
         songLine = songLine.slice(0, songLine.length -1);
-        songLine += ']\n';
+        songLine += '];' + song.guessTime + '\n';
     }
     input_edit_songs.value = songLine.slice(0, songLine.length -1);
 }
