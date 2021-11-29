@@ -7,6 +7,7 @@ const playlistSchema = mongoose.Schema({
     songs: [{
         name: String,
         url: String,
+        guessTime: Number,
         acceptedAnswers: [String]
     }]
 });

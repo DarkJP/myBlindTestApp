@@ -1,20 +1,8 @@
-/* To make a mistake is human but to really fuck things up you need a computer. */
-
 /* Homepage stuff */
 const homepage_container = document.getElementById('homepage-container');
 const inpt_username = document.getElementById('inpt_username');
 const inpt_roomname = document.getElementById('inpt_roomname');
 const btn_join_room = document.getElementById('btn_join_room');
-
-/* Room stuff */
-const room_container = document.getElementById('room-container');
-const left = document.getElementById('left');
-const middle = document.getElementById('middle');
-const div_messages = document.getElementById('div_messages');
-
-/* Messages stuff */
-const inpt_msg = document.getElementById('inpt_msg');
-const btn_send_msg = document.getElementById('btn_send_msg');
 
 /* Playlists stuff */
 const testsTitle = document.getElementById('tests-title');
@@ -24,91 +12,10 @@ let selectedPlaylistId;
 
 const socket = io();
 
-btn_join_room.onclick = function btnJoinRoomClick() {
-
-    inpt_username.className = inpt_username.value == ''
-                              ? 'form-control border-danger'
-                              : 'form-control';
-    inpt_roomname.className = inpt_roomname.value == ''
-                              ? 'form-control border-danger'
-                              : 'form-control';
-
-    if (inpt_username.value != '' && inpt_roomname.value != '') {
-        homepage_container.style.display = 'none';
-        room_container.style.display = 'flex';
-
-        /* Notifier le serveur de la connexion */
-        socket.emit('joinRoom', {
-            username: inpt_username.value,
-            room: inpt_roomname.value
-        });
-
-        displayPlaylists();
-    }
-}
-
-/* Écouter les messages de chat du serveur */
-socket.on('message', msg => {
-    console.log(msg);
-    displayChatMessage(msg);
-});
-
-/* Écouter les messages d'infos sur la room du serveur */
-socket.on('roomUsers', info => {
-    console.log(info);
-    displayRoomInfo(info);
-});
-
 /* Show start button only to room admin */
 socket.on('adminStartBtn', () => {
     btn_start_container.innerHTML = '<button id="btn_start_test" class="btn btn-primary">Commencer le test</button>';
 });
-
-/* Envoi de messsage par la touche Entrée */
-inpt_msg.addEventListener('keydown', function(e) {
-    if (e.code == 'Enter') {
-        sendMessage(inpt_msg.value);
-    }
-})
-
-btn_send_msg.onclick = function btnSendMessageClick() {
-    sendMessage(inpt_msg.value);
-}
-
-function sendMessage(message) {
-    if (inpt_msg.value != '') {
-        socket.emit('chatMessage', message);
-        inpt_msg.value = '';
-    }
-}
-
-function displayChatMessage(message) {
-    let p = document.createElement('p');
-    p.innerHTML = `<b>${message.username} :</b> ${message.msg}`
-    div_messages.append(p);
-    div_messages.scrollTop = div_messages.scrollHeight;
-}
-
-function displayRoomInfo(info) {
-    left.innerHTML = '';
-
-    let roomname = document.createElement('p');
-    roomname.innerHTML = `<b>Nom de la partie :</b><br/>${info.room}`;
-    left.append(roomname);
-
-    let players = document.createElement('p');
-    players.innerHTML = '<b>Joueurs connectés :</b>';
-    left.append(players);
-
-    for (let i = 0; i < info.users.length; i++) {
-        let player = document.createElement('p');
-        player.innerHTML = info.users[i].username;
-        if (info.users[i].isAdmin) {
-            player.style.color = 'gold';
-        }
-        left.append(player);
-    }
-}
 
 async function displayPlaylists() {
     let DBData = await getPlaylists();
@@ -181,6 +88,11 @@ function displayGameScreen() {
     input.disabled = true;
     gameContainer.append(input);
 
+    let opt_countdown = document.createElement('p');
+    opt_countdown.id = 'opt_countdown';
+    opt_countdown.innerHTML = 'Temps restant :';
+    gameContainer.append(opt_countdown);
+
     opt_playlists.append(gameContainer);
 }
 
@@ -189,22 +101,52 @@ $(document).on('keydown', '#inpt_answer', function(e) {
         socket.emit('answer', this.value);
         this.value = '';
         this.disabled = true;
+        clearInterval(interval);
+        document.getElementById('opt_countdown').innerHTML = 'En attente des autres joueurs...';
     }
 });
 
 /* server sends a song */
-socket.on('song', songURL => {
+socket.on('song', songObj => {
+    console.log('songObj:');
+    console.log(songObj);
     displayGameScreen();
     $('#inpt_answer').prop('disabled', false);
     $('#inpt_answer').focus();
     btn_start_container.innerHTML = '';
-    // Lancer la video
-    let videoId = urlToId(songURL);
 
-    console.log(`videoId: ${videoId}`);
+    // Lancer la video
+    let videoId = urlToId(songObj.url);
     ytPlayer.loadVideoById(videoId, 0, "small");
     ytPlayer.playVideo();
+
+    // set timer
+    startTimer(songObj.guessTime);
 });
+
+let interval;
+
+function startTimer(duration) {
+    let timer = duration, seconds;
+    interval = setInterval(function () {
+        seconds = parseInt(timer % 60, 10);
+
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+        document.getElementById('opt_countdown').innerHTML =
+            'Temps restant : ' + seconds + 's';
+
+        if (--timer < 0) {
+            timer = duration;
+            clearInterval(interval);
+            // send answer & disable input
+            let inpt_answer = document.getElementById('inpt_answer');
+            socket.emit('answer', inpt_answer.value);
+            inpt_answer.value = '';
+            inpt_answer.disabled = true;
+        }
+    }, 1000);
+}
 
 function urlToId(url) {
     return url.indexOf('=') != -1
@@ -212,10 +154,8 @@ function urlToId(url) {
         : url.substring(url.indexOf('.be/') +4);
 }
 
+/* Résultats du round */
 socket.on('roundResult', res => {
-    console.log('Résultats du round :');
-    console.log(res);
-    // Stop music ? Restart it ?
     opt_playlists.append(displayRoundScores(res));
 });
 
@@ -326,9 +266,8 @@ function displayFinalScores(scoreObj) {
 }
 
 $(document).on('click', '#btn_back_home', function clickRetourAccueil() {
-    // notifier le serveur du retour à l'accueil (pour les autres joueurs)
+    // Notifier le serveur du retour à l'accueil (pour les autres joueurs)
     socket.emit('adminWentBackHome');
-    // re enable playlist selection and show "commencer le test" button
 });
 
 socket.on('goBackHome', () => {

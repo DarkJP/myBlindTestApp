@@ -118,7 +118,10 @@ io.on('connection', socket => {
 
         setTimeout(function () {
             io.to(user.room).emit('message', formatMessage(BOTNAME, 'C\'est parti !'));
-            io.to(user.room).emit('song', plObj.songs[plObj.activeSongIndex].url);
+            io.to(user.room).emit('song',
+                {url: plObj.songs[plObj.activeSongIndex].url,
+                 guessTime: plObj.songs[plObj.activeSongIndex].guessTime}
+                );
         }, 5000);
     });
 
@@ -184,7 +187,10 @@ io.on('connection', socket => {
 
         } else {
             plObj.activeSongIndex ++;
-            io.to(plObj.room).emit('song', plObj.songs[plObj.activeSongIndex].url);
+            io.to(plObj.room).emit('song',
+                {url: plObj.songs[plObj.activeSongIndex].url,
+                 guessTime: plObj.songs[plObj.activeSongIndex].guessTime}
+            );
         }
     });
 
