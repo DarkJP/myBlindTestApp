@@ -30,7 +30,7 @@ const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
 
-mongoose.connect('mongodb+srv://user_01:1234@cluster0.cj7ah.mongodb.net/blindtestDB?retryWrites=true&w=majority',
+mongoose.connect('<mongodb data base>',
     { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('Successfuly connected to MongoDB'))
     .catch(() => console.log('Connection to MongoDB failed'));
